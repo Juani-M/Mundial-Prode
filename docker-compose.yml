@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  # ── Base de datos PostgreSQL ──────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: prode_user
+      POSTGRES_PASSWORD: prode_pass
+      POSTGRES_DB: prode_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # ── Backend FastAPI ───────────────────────────
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://prode_user:prode_pass@db:5432/prode_db
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+
+  # ── Worker (tareas en segundo plano) ─────────
+  worker:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    command: python -m app.workers.fetch_fixtures
+    environment:
+      DATABASE_URL: postgresql://prode_user:prode_pass@db:5432/prode_db
+    depends_on:
+      - db
+      - backend
+    volumes:
+      - ./backend:/app
+
+  # ── Nginx (frontend + reverse proxy) ─────────
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
