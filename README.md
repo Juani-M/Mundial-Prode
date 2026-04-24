@@ -1,14 +1,14 @@
-# 🏆 Prode — Juego de Pronósticos Deportivos
+cd backe# 🏆 Prode — Juego de Pronósticos Deportivos
 
 Aplicación web full-stack para gestionar pronósticos deportivos (tipo Prode).
 
 ## Stack Tecnológico
 
-| Capa | Tecnología |
-|---|---|
-| Backend | Python 3.12 + FastAPI |
-| Base de datos | PostgreSQL 16 + SQLAlchemy 2 |
-| Frontend | Vanilla JS (ES6) + HTML5 + CSS3 |
+| Capa            | Tecnología                      |
+| --------------- | ------------------------------- |
+| Backend         | Python 3.12 + FastAPI           |
+| Base de datos   | PostgreSQL 16 + SQLAlchemy 2    |
+| Frontend        | Vanilla JS (ES6) + HTML5 + CSS3 |
 | Infraestructura | Docker + Docker Compose + Nginx |
 
 ## Estructura del Proyecto
@@ -31,6 +31,7 @@ prode/
 ## Inicio Rápido
 
 ### 1. Clonar y configurar variables de entorno
+
 ```bash
 git clone <repo-url>
 cd prode
@@ -39,23 +40,25 @@ cp .env.example .env
 ```
 
 ### 2. Levantar todos los servicios
+
 ```bash
 docker compose up --build
 ```
 
 ### 3. Acceder
+
 - **Frontend**: http://localhost
 - **API (docs)**: http://localhost/docs
 - **API directa**: http://localhost:8000
 
 ## Servicios Docker
 
-| Servicio | Puerto | Descripción |
-|---|---|---|
-| `db` | 5432 | PostgreSQL |
-| `backend` | 8000 | FastAPI (uvicorn) |
-| `worker` | — | Worker de tareas en background |
-| `nginx` | 80 | Servidor web + reverse proxy |
+| Servicio  | Puerto | Descripción                    |
+| --------- | ------ | ------------------------------ |
+| `db`      | 5432   | PostgreSQL                     |
+| `backend` | 8000   | FastAPI (uvicorn)              |
+| `worker`  | —      | Worker de tareas en background |
+| `nginx`   | 80     | Servidor web + reverse proxy   |
 
 ## Desarrollo Local (sin Docker)
 

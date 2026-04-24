@@ -28,6 +28,8 @@ htmlcov/
 .env
 .env.local
 .env.*
+!.env.example
+
 
 # --- Sistema y Editores ---
 .vscode/
