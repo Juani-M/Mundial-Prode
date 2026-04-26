@@ -12,6 +12,10 @@ class Settings(BaseSettings):
 
     GOOGLE_CLIENT_ID: str = "279991018948-85nrnpicnd0unba94tpimrt10qleqirn.apps.googleusercontent.com"
 
+    # API de deportes (football-data.org)
+    SPORTS_API_KEY: str = ""
+    SPORTS_API_BASE_URL: str = "https://api.football-data.org/v4"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
