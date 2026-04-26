@@ -3,15 +3,15 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from google.oauth2 import id_token
 from google.auth.transport import requests
-import os
 
 from app.core.database import get_db
+from app.core.config import settings
 from app.models.usuario import Usuario
 
 router = APIRouter()
 
-# Debería idealmente salir de variables de entorno
-GOOGLE_CLIENT_ID = "279991018948-85nrnpicnd0unba94tpimrt10qleqirn.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = settings.GOOGLE_CLIENT_ID
+
 
 class GoogleLoginRequest(BaseModel):
     token: str

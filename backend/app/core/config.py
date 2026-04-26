@@ -5,10 +5,12 @@ class Settings(BaseSettings):
     APP_NAME: str = "API Prode Mundial"
     VERSION: str = "1.0"
     DATABASE_URL: str = "sqlite:///./prode.db"
-    
+
     SECRET_KEY: str = "tu_clave_super_secreta_aqui"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+
+    GOOGLE_CLIENT_ID: str = "279991018948-85nrnpicnd0unba94tpimrt10qleqirn.apps.googleusercontent.com"
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -18,3 +20,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
