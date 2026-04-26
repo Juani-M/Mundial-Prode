@@ -4,6 +4,8 @@ import { Calendar, PenLine, Trophy, Sun, Moon } from 'lucide-react'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
 import './App.css'
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 const BANDERAS = {
   "Argentina": "ar", "Brasil": "br", "Alemania": "de", "Polonia": "pl",
   "Francia": "fr", "Inglaterra": "gb-eng", "España": "es", "Portugal": "pt",
@@ -74,8 +76,8 @@ function Fixture({ userId }) {
   useEffect(() => {
     // const userId = 1; // Passed via props
     Promise.all([
-      fetch('http://127.0.0.1:8000/api/v1/matches/').then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/v1/predictions/user/${userId}`).then(res => res.json())
+      fetch(`${API_BASE}/api/v1/matches/`).then(res => res.json()),
+      fetch(`${API_BASE}/api/v1/predictions/user/${userId}`).then(res => res.json())
     ]).then(([matchesData, predictionsData]) => {
         setMatches(matchesData)
         setPredictions(Array.isArray(predictionsData) ? predictionsData : [])
@@ -214,9 +216,9 @@ function Predicciones({ userId }) {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://127.0.0.1:8000/api/v1/matches/').then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/v1/predictions/user/${userId}`).then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/v1/group-predictions/user/${userId}`).then(res => res.json())
+      fetch(`${API_BASE}/api/v1/matches/`).then(res => res.json()),
+      fetch(`${API_BASE}/api/v1/predictions/user/${userId}`).then(res => res.json()),
+      fetch(`${API_BASE}/api/v1/group-predictions/user/${userId}`).then(res => res.json())
     ]).then(([matchesData, predictionsData, groupPredsData]) => {
         setMatches(matchesData)
         
@@ -262,7 +264,7 @@ function Predicciones({ userId }) {
   const saveMatchPrediction = (matchId) => {
     const p = matchPredictions[matchId];
     if (!p) return;
-    fetch('http://127.0.0.1:8000/api/v1/predictions/', {
+    fetch(`${API_BASE}/api/v1/predictions/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, match_id: matchId, score_home_predicted: p.home, score_away_predicted: p.away })
@@ -460,7 +462,7 @@ function Ranking() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/v1/users/ranking')
+    fetch(`${API_BASE}/api/v1/users/ranking`)
       .then(res => res.json())
       .then(data => { setUsers(data); setLoading(false) })
       .catch(err => { console.error(err); setLoading(false) })
@@ -522,7 +524,7 @@ function App() {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/google-login', {
+      const res = await fetch(`${API_BASE}/api/v1/google-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credentialResponse.credential })
@@ -546,7 +548,7 @@ function App() {
     localStorage.removeItem('prode_user');
   }
 
-  const GOOGLE_CLIENT_ID = "279991018948-85nrnpicnd0unba94tpimrt10qleqirn.apps.googleusercontent.com";
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "279991018948-85nrnpicnd0unba94tpimrt10qleqirn.apps.googleusercontent.com";
 
   if (!user) {
     return (
